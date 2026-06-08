@@ -1,0 +1,21 @@
+import cv2
+import time
+from google.colab.patches import cv2_imshow
+from IPython.display import clear_output
+
+for mode, delay in [("Normal", 0.03), ("Slow", 0.2), ("Fast", 0)]:
+    cap = cv2.VideoCapture("video.mp4")
+    print(mode, "Motion")
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        cv2_imshow(frame)
+        time.sleep(delay)
+        clear_output(wait=True)
+
+    cap.release()
+
+print("Completed")
