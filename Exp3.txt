@@ -1,0 +1,23 @@
+import cv2
+
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+	print('Cannot open camera'); raise SystemExit
+
+speed = 1.0
+print("Keys: q quit, s slow, f fast, n normal, +/ - adjust")
+while True:
+	ret, frame = cap.read()
+	if not ret: break
+	cv2.putText(frame, f"{speed:.2f}x", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
+	cv2.imshow('cam', frame)
+	delay = max(1, int(30 / max(0.01, speed)))
+	k = cv2.waitKey(delay) & 0xFF
+	if k == ord('q'): break
+	if k == ord('s'): speed = 0.5
+	if k == ord('f'): speed = 2.0
+	if k == ord('n'): speed = 1.0
+	if k in (ord('+'), ord('=')): speed *= 1.25
+	if k in (ord('-'), ord('_')): speed = max(0.05, speed / 1.25)
+
+cap.release(); cv2.destroyAllWindows()
